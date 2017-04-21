@@ -11,7 +11,10 @@ class Home extends Component {
     render() {
         return (
             <div >
-                <h1>Welcome</h1>
+               <center> 
+                   <h1>Aheer Auction</h1>
+                   <h3>50% OFF Today, BID on your desired product before it expired</h3>
+                </center>
                 <br /><br /><br /><br />
                 <div>
                     <center>

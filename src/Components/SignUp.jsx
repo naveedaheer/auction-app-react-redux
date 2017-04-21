@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import AppBar from 'material-ui/AppBar';
 import {firebaseApp, ref} from '../Database/firebaseApp'
-import { RegisterUser} from '../Store/Actions/MiddleWare'
+import { RegisterUser} from '../Store/Actions/Middleware'
 
 const mapStateToProps = (state) => { 
     console.log("state in mapStateToProps", state)
@@ -63,13 +63,6 @@ class SignupComponent extends React.Component {
                 <center>
                 <h1>Register</h1>
                 <form onSubmit={this.submit} >
-                    <TextField
-                        hintText="Full Name"
-                        name="fullname"
-                        value={this.state.fullname}
-                        floatingLabelText="Full Name"
-                        onChange={this.inputChange}
-                        /><br />
 
                     <TextField
                         type="email"
@@ -86,6 +79,13 @@ class SignupComponent extends React.Component {
                         name="password"
                         value={this.state.password}
                         floatingLabelText="Password"
+                        onChange={this.inputChange}
+                        /><br />
+                        <TextField
+                        hintText="Full Name"
+                        name="fullname"
+                        value={this.state.fullname}
+                        floatingLabelText="Full Name"
                         onChange={this.inputChange}
                         /><br /><br />
                     <RaisedButton type="submit" label="Register" primary={true} /> <br /><br />

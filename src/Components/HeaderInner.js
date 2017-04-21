@@ -1,8 +1,9 @@
 import React from "react"
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
-import { Link, browserHistory } from "react-router"
-import * as firebase from "firebase"
+import { Link, browserHistory } from "react-router";
+import Paper from 'material-ui/Paper';
+import * as firebase from "firebase";
 
 var styles = {
   appBar: {
@@ -16,10 +17,14 @@ var styles = {
     margin: 12,
     backgroundColor: "transparent"
   },
+paper : {
+  height: 500,
+  width: 500,
+  margin: 20,
+  textAlign: 'center',
+  display: 'inline-block',
+}
 
-  tabs: {
-    width: '100%',
-  },
 }
 
 export default class HeaderInner extends React.Component {
@@ -47,6 +52,8 @@ export default class HeaderInner extends React.Component {
           <RaisedButton style={styles.buttonInAppBar} onClick={this.logoutBtn.bind(this)} label="Logout" primary={false} />
         </AppBar >
         {this.props.children}
+        <Paper style={styles.paper} zDepth={5} circle={false} ><h1> Auctioneer </h1> </Paper>
+        <Paper style={styles.paper} zDepth={5} circle={false} ><h1> Bidder </h1> </Paper>
       </div>
     )
   }

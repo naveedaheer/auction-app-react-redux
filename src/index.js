@@ -7,6 +7,8 @@ import Login from './Components/SignIn';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import HeaderOuter from "./Components/HeaderOuter"
 import HeaderInner from "./Components/HeaderInner"
+import HeaderAuctioneer from "./Components/HeaderAuctioneer"
+import HeaderBidder from "./Components/HeaderBidder"
 import {firebaseApp} from './Database/firebaseApp'
 import store from './Store/Store'
 import AllActions from './Store/Actions/AllActions'
@@ -25,6 +27,8 @@ ReactDOM.render(
                 
                 <Route path="/home" component={HeaderInner}>
                 <IndexRoute component={Home}> </IndexRoute>
+                <Route path="auctioneer-home" component={HeaderInner} />
+                <Route path="bidder-home" component={HeaderInner} />
                 
                 </Route>
             </Router>

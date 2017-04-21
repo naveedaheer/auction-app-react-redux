@@ -1,6 +1,24 @@
 import AllActions from './AllActions'
 import { firebaseApp } from '../../Database/firebaseApp'
 import { browserHistory } from 'react-router'
+import firebase from 'firebase';
+
+
+export function LoginWithFacebook(){
+    return (dispatch) => {
+        var provider = new firebase.auth.FacebookAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(function(result){
+            var user = result.user;
+            console.log("LoginSuccess");
+            dispatch(AllActions.userSignInSuccess(user))
+            browserHistory.replace('/home')
+        })
+                .catch((error) => {
+                console.log("login error", error)
+                dispatch(AllActions.userSignInFailed(error))
+            })
+    }
+}
 
 export function RegisterUser(SignUpData) {
     console.log("RegisterUser(SignUpData)", SignUpData)
