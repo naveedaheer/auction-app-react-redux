@@ -2,8 +2,7 @@ import { Constants } from '../Constants'
 import { firebaseApp } from '../../Database/firebaseApp'
 import { browserHistory } from 'react-router'
 
-
-export default class AllActions {
+export class AuthActions {
 
     //LoggedIn
     static hasLoggedIn(email) {
@@ -14,32 +13,6 @@ export default class AllActions {
         return action;
     }
 
-    //Sign Up
-    static userSignUp() {
-
-        return {
-            type: Constants.SIGN_UP,
-
-        }
-
-    }
-
-    static userSignUpSuccess(authUserData) {
-        return {
-            type: Constants.SIGN_UP_SUCCESS,
-            authUserData
-        }
-
-    }
-
-    static userSignUpFailed(error) {
-        return {
-            type: Constants.SIGN_UP_FAILED,
-            error
-        }
-
-    }
-
 
     //SignIn
     static userSignIn() {
@@ -47,7 +20,6 @@ export default class AllActions {
             type: Constants.SIGN_IN,
 
         }
-
     }
 
     static userSignInSuccess(authUserData) {
@@ -67,10 +39,9 @@ export default class AllActions {
     }
 
     static userLogOut() {
-        const action = {
-            type: Constants.LOG_OUT
+        return  {
+            type: Constants.LOGOUT
         }
-        return action;
     }
 
     static userLogOutSuccess() {
@@ -80,4 +51,53 @@ export default class AllActions {
         return action;
     }
 
+}
+
+
+export class ProductActions{
+
+static addProduct() {
+        return {
+            type: Constants.ADD_PRODUCT
+        }
+    }
+
+
+    static addProductSuccess(addProductData) {
+        return {
+            type: Constants.ADD_PRODUCT_SUCCESS,
+            addProductData
+        }
+    }
+
+
+    static addProductFailed(error) {
+        return {
+            type: Constants.ADD_PRODUCT_FAILED,
+            error
+        }
+    }
+
+    static viewProduct() {
+        return {
+            type: Constants.VIEW_PRODUCT
+        }
+    }
+
+
+    static viewProductSuccess(viewProductData, productObject) {
+        return {
+            type: Constants.VIEW_PRODUCT_SUCCESS,
+            viewProductData,
+            productObject
+        }
+    }
+
+
+    static viewProductFailed(error) {
+        return {
+            type: Constants.VIEW_PRODUCT_FAILED,
+            error
+        }
+    }
 }

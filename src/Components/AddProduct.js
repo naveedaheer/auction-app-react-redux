@@ -5,14 +5,18 @@ import {bindActionCreators} from 'redux'
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
-import {AddNewSale, ViewProducts, ViewStores} from '../../Store/Actions/MiddleWare'
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import firebase from 'firebase';
+import FileUploader from 'react-firebase-file-uploader';
+//import {AddNewSale, ViewProducts, ViewStores} from '../../Store/Actions/MiddleWare'
 
 const style = {
     padding: '10px',
     textAlign: 'center'
 };
 
-class AddSaleOrder extends Component {
+class AddProduct extends Component {
     constructor(props) {
         super();
         this.state = {
@@ -21,9 +25,14 @@ class AddSaleOrder extends Component {
             description: '',
             qty: 0,
             unitPrice: 0,
-            storeName: '',
-            storeId: '',
-            saleDate: ''
+            productCategory: '',
+            auctionTime: '',
+
+            username: '',
+            avatar: '',
+            isUploading: false,
+            progress: 0,
+            avatarURL: ''
         }
      //   props.ViewProducts();
      //   props.ViewStores();
@@ -41,29 +50,77 @@ class AddSaleOrder extends Component {
         e.preventDefault();
         let productDetails = {
             productName: '',
-            storeName: '', 
-            productId: this.state.productId,
-            storeId: this.state.storeId,
             description: this.state.description,
             qty: this.state.qty,
             unitPrice: this.state.unitPrice,
-            saleDate: this.state.saleDate
+            productCategory: this.state.productCategory,
+            auctionTime: this.state.auctionTime
         }
+
         console.log(productDetails)
        // this.props.addSaleRequest(productDetails);     
     }
 
-
+    handleChangeUsername = (event) => this.setState({username: event.target.value});
+  handleUploadStart = () => this.setState({isUploading: true, progress: 0});
+  handleProgress = (progress) => this.setState({progress});
+  handleUploadError = (error) => {
+      this.setState({isUploading: false});
+      console.error(error);
+  }
+  handleUploadSuccess = (filename) => {
+      this.setState({avatar: filename, progress: 100, isUploading: false});
+      firebase.storage().ref('images').child(filename).getDownloadURL().then(url => this.setState({avatarURL: url}));
+  };
 
     render() {
         return (
             <div ><center>
-                <h1>Add Sale Order</h1>
-                <form onSubmit={this.submit} >
-                    <br />
-                    <br />
+                <h1>Add Product for Auction</h1>
 
-                    
+                <form onSubmit={this.submit} >
+                           
+          <label>Produc Image:</label><br />
+          {this.state.isUploading &&
+            <p>Progress: {this.state.progress}</p>
+          }
+          {this.state.avatarURL &&
+            <img src={this.state.avatarURL} />
+          }<br/>
+          <FileUploader
+            accept="image/*"
+            name="avatar"
+            randomizeFilename
+            storageRef={firebase.storage().ref('images')}
+            onUploadStart={this.handleUploadStart}
+            onUploadError={this.handleUploadError}
+            onUploadSuccess={this.handleUploadSuccess}
+            onProgress={this.handleProgress}
+          />
+                    <br />
+                    <br />
+                   <select style={style}
+                        required
+                        name="productCategory"
+                        ref="productCategory"
+                        onChange={this.inputHandler}
+                        value={this.state.productCategory}
+                    >
+                        <option value="Select Category" > Select Category  </option>
+                                    <option value={"mobile"}>Mobile</option>
+                                     <option value={"laptop"}>Laptop</option>
+                                      <option value={"camera"}>Camera</option>
+                            
+                    </select>
+                    <br />
+                    <TextField
+                        type="text"
+                        hintText="Product Title"
+                        name="productName"
+                        value={this.state.productName}
+                        floatingLabelText="Product Title"
+                        onChange={this.inputHandler}
+                    />
                     <br />
                     <br />
 
@@ -86,14 +143,19 @@ class AddSaleOrder extends Component {
                         onChange={this.inputHandler}
                     /><br />
                     <br />
-                    <DatePicker
-                        hintText="Purchase Date"
-                        mode="landscape"
-                        name="purchaseDate"
-                        value={this.state.saleDate}
-                        onChange={this.handleDateChange}
-                        maxDate={new Date()}
-                    />
+
+       <select style={style}
+                        required
+                        name="auctionTime"
+                        ref="auctionTime"
+                        onChange={this.inputHandler}
+                        value={this.state.auctionTime}
+                    >
+                        <option value="Select Time" > Select Time  </option>
+                                    <option value={"3days"}>3 days</option>
+                                     <option value={"5days"}>5 days</option>
+                                      <option value={"7days"}>7 days</option>
+                    </select>
                     <br /><br />
                       <TextField
                         type="text"
@@ -130,4 +192,5 @@ class AddSaleOrder extends Component {
 // }
 
 //export default connect(mapStateToProps, mapDispatchToProps)(AddSaleOrder);
-export default AddSaleOrder;
+
+export default AddProduct;

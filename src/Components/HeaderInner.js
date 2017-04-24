@@ -2,7 +2,6 @@ import React from "react"
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link, browserHistory } from "react-router";
-import Paper from 'material-ui/Paper';
 import * as firebase from "firebase";
 
 var styles = {
@@ -52,9 +51,7 @@ export default class HeaderInner extends React.Component {
           <RaisedButton style={styles.buttonInAppBar} onClick={this.logoutBtn.bind(this)} label="Logout" primary={false} />
         </AppBar >
         {this.props.children}
-         <Link to ="/home/auctioneer-home" > <Paper style={styles.paper} zDepth={5} circle={false} ><h1> Auctioneer </h1> </Paper> </Link>
-        <Paper style={styles.paper} zDepth={5} circle={false} ><h1> Bidder </h1> </Paper>
-      </div>
+             </div>
     )
   }
 }

@@ -9,9 +9,10 @@ import HeaderOuter from "./Components/HeaderOuter"
 import HeaderInner from "./Components/HeaderInner"
 import HeaderAuctioneer from "./Components/HeaderAuctioneer"
 import HeaderBidder from "./Components/HeaderBidder"
+import AddProduct from "./Components/AddProduct"
 import {firebaseApp} from './Database/firebaseApp'
 import store from './Store/Store'
-import AllActions from './Store/Actions/AllActions'
+import {AuthActions} from './Store/Actions/AllActions'
 import { Router, Route, hashHistory, IndexRoute, browserHistory } from 'react-router';
 
 ReactDOM.render(
@@ -27,8 +28,12 @@ ReactDOM.render(
                 
                 <Route path="/home" component={HeaderInner}>
                 <IndexRoute component={Home}> </IndexRoute>
-                <Route path="auctioneer-home" component={HeaderInner} />
-                <Route path="bidder-home" component={HeaderInner} />
+                
+                <Route path="auctioneer-home" component={HeaderAuctioneer} >
+                <Route path="add-product" component={AddProduct} />
+                </Route>
+                
+                <Route path="bidder-home" component={HeaderBidder} />
                 
                 </Route>
             </Router>
@@ -42,7 +47,7 @@ firebaseApp.auth().onAuthStateChanged(user=>{
   if(user){
     console.log("user has loggedin or signedup" , user )
     const {email} = user;
-    store.dispatch(AllActions.hasLoggedIn(email));
+    store.dispatch(AuthActions.hasLoggedIn(email));
     browserHistory.replace('/home'); 
   }
   else{

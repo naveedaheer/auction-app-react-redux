@@ -16,15 +16,8 @@ export default class HeaderBidder extends React.Component {
     render() {
         return (
             <div>
-                <AppBar
-                    style={styles.appBar}
-                    title="App Title"
-                    iconClassNameRight="muidocs-icon-navigation-expand-more"
-                    showMenuIconButton={false}
-
-                />
+                <h2>Hello Bidder</h2>
                 <br /><br />
-
                 {this.props.children}
             </div>
         )

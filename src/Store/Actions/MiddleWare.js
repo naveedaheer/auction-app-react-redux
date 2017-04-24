@@ -1,4 +1,4 @@
-import AllActions from './AllActions'
+import {AuthActions, ProductActions} from './AllActions'
 import { firebaseApp } from '../../Database/firebaseApp'
 import { browserHistory } from 'react-router'
 import firebase from 'firebase';
@@ -10,12 +10,12 @@ export function LoginWithFacebook(){
         firebase.auth().signInWithPopup(provider).then(function(result){
             var user = result.user;
             console.log("LoginSuccess");
-            dispatch(AllActions.userSignInSuccess(user))
+            dispatch(AuthActions.userSignInSuccess(user))
             browserHistory.replace('/home')
         })
                 .catch((error) => {
                 console.log("login error", error)
-                dispatch(AllActions.userSignInFailed(error))
+                dispatch(AuthActions.userSignInFailed(error))
             })
     }
 }
@@ -23,7 +23,7 @@ export function LoginWithFacebook(){
 export function RegisterUser(SignUpData) {
     console.log("RegisterUser(SignUpData)", SignUpData)
     return (dispatch) => {
-        dispatch(AllActions.userSignUp());
+        dispatch(AuthActions.userSignUp());
         firebaseApp.auth().createUserWithEmailAndPassword(SignUpData.email, SignUpData.password)
             .then((data) => {
                 const userRef = firebaseApp.database().ref('userInfo');
@@ -33,14 +33,14 @@ export function RegisterUser(SignUpData) {
                     name: SignUpData.fullname
                 }
                     , signUpSuccessData => {
-                        dispatch(AllActions.userSignUpSuccess({ uid: data.uid, email: SignUpData.email, name: SignUpData.fullname }));
+                        dispatch(AuthActions.userSignUpSuccess({ uid: data.uid, email: SignUpData.email, name: SignUpData.fullname }));
                         browserHistory.replace('/home');
 
                     });
             })
             .catch((error) => {
                 console.log("Something Went Wrong, Please Try Again ", error);
-                dispatch(AllActions.userSignUpFailed(error));
+                dispatch(AuthActions.userSignUpFailed(error));
             });
     }
 }
@@ -48,20 +48,59 @@ export function RegisterUser(SignUpData) {
 export function LoginUser(LogInData) {
     console.log("LoginUser(LogInData)", LogInData)
     return (dispatch) => {
-        dispatch(AllActions.userSignIn());
+        dispatch(AuthActions.userSignIn());
         firebaseApp.auth().signInWithEmailAndPassword(LogInData.email, LogInData.password)
             .then((data) => {
                 return firebaseApp.database().ref('/userInfo' + data.uid).once('value', snapshot => {
                     let userData = snapshot.val();
                     console.log("userData", userData);
-                    dispatch(AllActions.userSignInSuccess(userData))
+                    dispatch(AuthActions.userSignInSuccess(userData))
                     browserHistory.replace('/home')
                 })
 
             })
             .catch((error) => {
                 console.log("login error", error)
-                dispatch(AllActions.userSignInFailed(error))
+                dispatch(AuthActions.userSignInFailed(error))
             })
     }
 }
+
+
+export function AddNewProduct(AddNewProductData) {
+
+    return (dispatch) => {
+        dispatch(ProductActions.addProduct());
+        firebaseApp.database().ref('products').push(AddNewProductData)
+            .then((data) => {
+                console.log("Product Added Successfully")
+                dispatch(ProductActions.addProductSuccess(data));
+                browserHistory.replace('/home/view-products');
+            })
+            .catch((error) => {
+                console.log("Error in adding product", error)
+                dispatch(ProductActions.addProductFailed(error))
+            })
+    }
+}
+
+export function ViewProducts() {
+    return ((dispatch) => {
+        dispatch(ProductActions.viewProduct());
+        let ref = firebaseApp.database().ref().child('/products');
+        ref.once('value', function (snapshot) {
+            let productList = [];
+            snapshot.forEach(childSnapshot => {
+                var productObject = childSnapshot.val();
+                productObject.key = childSnapshot.key;
+                productList.push(productObject)
+            })
+            dispatch(ProductActions.viewProductSuccess(productList))
+        })
+            .catch((error) => {
+                dispatch(ProductActions.viewProductFailed(error))
+                console.log("error in getting Products", error)
+            })
+    })
+}
+
