@@ -12,7 +12,7 @@ var styles = {
     },
 }
 
-export default class HeaderOuter extends React.Component {
+export default class HeaderBidder extends React.Component {
     render() {
         return (
             <div>
