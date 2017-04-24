@@ -52,7 +52,7 @@ export default class HeaderInner extends React.Component {
           <RaisedButton style={styles.buttonInAppBar} onClick={this.logoutBtn.bind(this)} label="Logout" primary={false} />
         </AppBar >
         {this.props.children}
-        <Paper style={styles.paper} zDepth={5} circle={false} ><h1> Auctioneer </h1> </Paper>
+         <Link to ="/home/auctioneer-home" > <Paper style={styles.paper} zDepth={5} circle={false} ><h1> Auctioneer </h1> </Paper> </Link>
         <Paper style={styles.paper} zDepth={5} circle={false} ><h1> Bidder </h1> </Paper>
       </div>
     )
