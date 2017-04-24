@@ -12,17 +12,18 @@ var styles = {
     },
 }
 
-export default class HeaderOuter extends React.Component {
+export default class HeaderAuctioneer extends React.Component {
     render() {
         return (
             <div>
-                <AppBar
+              <AppBar
                     style={styles.appBar}
                     title="App Title"
                     iconClassNameRight="muidocs-icon-navigation-expand-more"
                     showMenuIconButton={false}
 
                 />
+               
                 <br /><br />
 
                 {this.props.children}
