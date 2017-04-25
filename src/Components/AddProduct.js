@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux'
-import {bindActionCreators} from 'redux'
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import DatePicker from 'material-ui/DatePicker';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import firebase from 'firebase';
 import FileUploader from 'react-firebase-file-uploader';
-//import {AddNewSale, ViewProducts, ViewStores} from '../../Store/Actions/MiddleWare'
+import {AddNewProduct} from '../Store/Actions/Middleware'
 
 const style = {
     padding: '10px',
@@ -20,12 +18,11 @@ class AddProduct extends Component {
     constructor(props) {
         super();
         this.state = {
-            productId: '',
             productName: '',
             description: '',
             qty: 0,
             unitPrice: 0,
-            productCategory: '',
+            productCategory: null,
             auctionTime: '',
 
             username: '',
@@ -34,12 +31,11 @@ class AddProduct extends Component {
             progress: 0,
             avatarURL: ''
         }
-     //   props.ViewProducts();
-     //   props.ViewStores();
+
         this.submit = this.submit.bind(this);
         this.inputHandler = this.inputHandler.bind(this);
     }
-    
+
     inputHandler(e) {
         this.setState({
             [e.target.name]: e.target.value
@@ -49,16 +45,17 @@ class AddProduct extends Component {
     submit(e) {
         e.preventDefault();
         let productDetails = {
-            productName: '',
+            productName: this.state.productName,
             description: this.state.description,
             qty: this.state.qty,
             unitPrice: this.state.unitPrice,
             productCategory: this.state.productCategory,
-            auctionTime: this.state.auctionTime
+            auctionTime: this.state.auctionTime,
+            imgUrl: this.props.avatarURL
         }
 
         console.log(productDetails)
-       // this.props.addSaleRequest(productDetails);     
+       this.props.addProduct(productDetails);     
     }
 
     handleChangeUsername = (event) => this.setState({username: event.target.value});
@@ -99,6 +96,7 @@ class AddProduct extends Component {
           />
                     <br />
                     <br />
+               
                    <select style={style}
                         required
                         name="productCategory"
@@ -174,23 +172,19 @@ class AddProduct extends Component {
     }
 }
 
-// const mapStateToProps = (state) => {
-//     console.log("state", state)
-//     return {
-//        allProducts: state.productReducer.products,
-//        allStores: state.storeReducer.stores
-//     }
-// }
+const mapStateToProps = (state) => {
+    console.log("state", state)
+    return {
+       //allProducts: state.productReducer.products,
+    }
+}
 
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         addSaleRequest: (data) => {
-//             dispatch(AddNewSale(data));
-//         },
-//         ...bindActionCreators({ ViewProducts, ViewStores }, dispatch)
-//     }
-// }
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addProduct: (data) => {
+            dispatch(AddNewProduct(data));
+        }      
+    }
+}
 
-//export default connect(mapStateToProps, mapDispatchToProps)(AddSaleOrder);
-
-export default AddProduct;
+export default connect(mapStateToProps, mapDispatchToProps)(AddProduct);
